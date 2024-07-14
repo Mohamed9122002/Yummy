@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yummy</title>
+    <link rel=" icon" href="./img/logo.png">
+    <link rel="stylesheet" href="./CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="./CSS/all.min.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+
+</head>
+
+<body class=" bg-dark text-white ">
+    <div class="loading  ">
+        <span class="loader"></span>
+    </div>
+    <div class=" nav-menu position-fixed z-3 d-flex min-vh-100 top-0 ">
+        <div class="nav-tap  bg-dark text-white d-flex justify-content-between  flex-column p-5 ">
+            <div class="links">
+                <ul class="list-unstyled overflow-hidden">
+                    <li class="py-2 search  ">
+                        Search</li>
+                    <li class="py-2  categories ">
+                        Categories</li>
+                    <li class="py-2 areas ">Area</li>
+                    <li class="py-2 ingredients ">
+                        Ingredients</li>
+                    <li class="py-2 contact  ">Contact
+                        Us</li>
+                </ul>
+            </div>
+            <div class="nav-footer">
+                <div class="icons text-white">
+                    <i class="fa-brands fa-facebook me-2 "></i>
+                    <i class="fa-brands fa-twitter me-2"></i>
+                    <i class="fa-solid fa-globe "></i>
+                </div>
+                <div class="footer mt-3">
+                    <p>Copyright Â© 2019 All Rights <br>Reserved.</p>
+                </div>
+            </div>
+        </div>
+        <div class="nav-header d-flex flex-column justify-content-between  p-2 align-items-center  bg-white text-dark">
+            <img class="logo" src="./img/logo.png" alt="logo">
+            <i class="fa-solid open-close-icon fa-2x fa-align-justify "></i>
+            <div>
+                <i class="fa-solid fa-globe d-block"></i>
+                <i class="fa-solid fa-share-nodes"></i>
+            </div>
+        </div>
+    </div>
+    <header id="home">
+        <div class="container" id="searchContainer">
+        </div>
+        <div class="container">
+            <div class="row  p-5 g-4" id="rowData">
+            </div>
+        </div>
+    </header>
+    <main>
+            <section class="details d-none my-4">
+                <div class="container">
+                    <header class="d-flex justify-content-end">
+                        <button class="btn btn-info" id="btnClose">X</button>
+                    </header>
+                    <div class="row g-5" id="detailsContent">
+                    </div>
+                </div>
+            </section>
+        <section id="contact" class="d-none">
+            <div class="min-vh-100 d-flex justify-content-center align-items-center ">
+                <div class="container">
+                    <form class="row my-5  g-3 ">
+                        <div class="col-md-6">
+                            <div class="form-data">
+                                <input type="text" id="name" class="form-control" placeholder="Enter Our Name " />
+                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                    <li> Name Is Required</li>
+                                    <li>Minmum Length 2 and Maxmum 20</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-data">
+                                <input type="email" id="email" class="form-control" placeholder="Enter Your Email" />
+
+                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                    <li>Email Is Required</li>
+                                    <li>InValid Email Formate</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-data">
+                                <input type="text" id="phone" class="form-control" placeholder="Enter Your Phone" />
+
+                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                    <li>Number Is Required</li>
+                                    <li>InValid Number Formate</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-data">
+                                <input type="number" id="age" class="form-control" placeholder="Enter Your Age" />
+                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                    <li>Age Is Required</li>
+                                    <li>InValid Age Formate</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-data">
+                                <input type="password" id="password" class="form-control"
+                                    placeholder="Enter Your Password" />
+                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                    <li>Password Is Required</li>
+                                    <li>Minimum eight characters, at least one letter and one number</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-data">
+                                <input type="password" id="restPassword" class="form-control"
+                                    placeholder="Enter Your RestPassword" />
+                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                    <li>RestPassword Is Required</li>
+                                    <li>Minimum eight characters, at least one letter and one number</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button id="submitBtn" class="btn btn-outline-primary disabled " type="submit">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <script src="./Js/jquery-3.7.1.min.js"></script>
+    <script src="./Js/main.js"></script>
+</body>
+
+</html>
