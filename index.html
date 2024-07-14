@@ -13,25 +13,25 @@
 </head>
 
 <body class=" bg-dark text-white ">
-    <div class="loading  ">
+    <div class="loading ">
         <span class="loader"></span>
     </div>
     <div class=" nav-menu position-fixed z-3 d-flex min-vh-100 top-0 ">
         <div class="nav-tap  bg-dark text-white d-flex justify-content-between  flex-column p-5 ">
             <div class="links">
-                <ul class="list-unstyled overflow-hidden">
-                    <li class="py-2 search  ">
+                <ul class="list-unstyled">
+                    <li class="py-2 search position-relative  ">
                         Search</li>
-                    <li class="py-2  categories ">
+                    <li class="py-2  categories position-relative  ">
                         Categories</li>
-                    <li class="py-2 areas ">Area</li>
-                    <li class="py-2 ingredients ">
+                    <li class="py-2 areas position-relative">Area</li>
+                    <li class="py-2 ingredients position-relative">
                         Ingredients</li>
-                    <li class="py-2 contact  ">Contact
+                    <li class="py-2 contact position-relative">Contact
                         Us</li>
                 </ul>
             </div>
-            <div class="nav-footer">
+            <div class="nav-footer position-relative">
                 <div class="icons text-white">
                     <i class="fa-brands fa-facebook me-2 "></i>
                     <i class="fa-brands fa-twitter me-2"></i>
@@ -57,6 +57,12 @@
         <div class="container">
             <div class="row  p-5 g-4" id="rowData">
             </div>
+            <div class="error d-none d-flex justify-content-center align-items-center vh-100" >
+                <figure>
+                    <img src="./img/no-data.PNG" loading="lazy" alt="Not Found">
+                    <figcaption class="text-center h4 ">Not Data</figcaption>
+                </figure>
+            </div>
         </div>
     </header>
     <main>
@@ -76,7 +82,7 @@
                         <div class="col-md-6">
                             <div class="form-data">
                                 <input type="text" id="name" class="form-control" placeholder="Enter Our Name " />
-                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                <ul class="list-unstyled text-center alert alert-danger p-0 invalid-feedback">
                                     <li> Name Is Required</li>
                                     <li>Minmum Length 2 and Maxmum 20</li>
                                 </ul>
@@ -86,7 +92,7 @@
                             <div class="form-data">
                                 <input type="email" id="email" class="form-control" placeholder="Enter Your Email" />
 
-                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                <ul class="list-unstyled text-center alert alert-danger p-0 invalid-feedback">
                                     <li>Email Is Required</li>
                                     <li>InValid Email Formate</li>
                                 </ul>
@@ -96,7 +102,7 @@
                             <div class="form-data">
                                 <input type="text" id="phone" class="form-control" placeholder="Enter Your Phone" />
 
-                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                <ul class="list-unstyled text-center alert alert-danger p-0 invalid-feedback">
                                     <li>Number Is Required</li>
                                     <li>InValid Number Formate</li>
                                 </ul>
@@ -105,7 +111,7 @@
                         <div class="col-md-6">
                             <div class="form-data">
                                 <input type="number" id="age" class="form-control" placeholder="Enter Your Age" />
-                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                <ul class="list-unstyled text-center alert alert-danger p-0 invalid-feedback">
                                     <li>Age Is Required</li>
                                     <li>InValid Age Formate</li>
                                 </ul>
@@ -115,8 +121,8 @@
                             <div class="form-data">
                                 <input type="password" id="password" class="form-control"
                                     placeholder="Enter Your Password" />
-                                <ul class="alert alert-danger p-0 invalid-feedback">
-                                    <li>Password Is Required</li>
+                                <ul class="list-unstyled text-center alert alert-danger p-0 invalid-feedback">
+                                    <li >Password Is Required</li>
                                     <li>Minimum eight characters, at least one letter and one number</li>
                                 </ul>
                             </div>
@@ -125,7 +131,7 @@
                             <div class="form-data">
                                 <input type="password" id="restPassword" class="form-control"
                                     placeholder="Enter Your RestPassword" />
-                                <ul class="alert alert-danger p-0 invalid-feedback">
+                                <ul class="list-unstyled text-center alert alert-danger p-0 invalid-feedback">
                                     <li>RestPassword Is Required</li>
                                     <li>Minimum eight characters, at least one letter and one number</li>
                                 </ul>

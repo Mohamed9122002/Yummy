@@ -2,22 +2,19 @@
 const rowData = document.getElementById("rowData");
 const searchContainer = document.getElementById("searchContainer");
 const baseUrl = `https://www.themealdb.com`;
-const inputName = document.getElementById("name");
-const inputEmail = document.getElementById("email");
-const inputPhone = document.getElementById("phone");
-const inputAge = document.getElementById("age");
-const inputPassword = document.getElementById("password");
-const inputRestPassword = document.getElementById("restPassword");
 const home = document.getElementById("home");
 const contact = document.getElementById("contact");
+const error = document.querySelector(".error");
 // open nav-menu
 function open() {
   $(".nav-menu").animate({ left: 0 }, 500);
   $(".open-close-icon").removeClass("fa-align-justify");
   $(".open-close-icon").addClass("fa-x");
-  for (let i = 0; i < 5; i++) {
-    $(".links li").eq(i).animate({ top: 0 });
-  }
+  $(".links li").animate({
+    top: 0
+  }, 1000);
+  $(".nav-footer").animate({ top: 0 }, 1000);
+
 }
 // close  nav-menu
 function close() {
@@ -25,11 +22,14 @@ function close() {
   $(".nav-menu").animate({ left: -outerW }, 500);
   $(".open-close-icon").removeClass("fa-x");
   $(".open-close-icon").addClass("fa-align-justify");
+  $(".links li").animate({
+    top: 400
+  }, 1000)
+  $(".nav-footer").animate({ top: 400 }, 1000);
 }
-$(document).ready(function() {
+$(document).ready(function () {
   close();
-
-  $(" i.open-close-icon").click(() => {
+  $("i.open-close-icon").click(() => {
     if ($(".nav-menu").css("left") == "0px") {
       close();
     } else {
@@ -41,7 +41,7 @@ $(document).ready(function() {
 function closeDetail() {
   document.querySelector(".details").classList.remove("d-none");
   rowData.classList.add("d-none");
-  document.getElementById("btnClose").addEventListener("click", function(e) {
+  document.getElementById("btnClose").addEventListener("click", function (e) {
     rowData.classList.remove("d-none");
     document.querySelector(".details").classList.add("d-none");
   });
@@ -50,10 +50,16 @@ function closeDetail() {
 async function allRecipe() {
   close();
   $(".loading").fadeIn(300).css({ display: "flex" });
-  let response = await fetch(`${baseUrl}/api/json/v1/1/search.php?s=a`);
-  let data = await response.json();
-  console.log(data);
-  displayAllRecipe(data.meals);
+  try {
+    let response = await fetch(`${baseUrl}/api/json/v1/1/search.php?s=a`);
+    let data = await response.json();
+    console.log(data);
+    displayAllRecipe(data.meals);
+  } catch (err) {
+    // console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
+  }
   $(".loading").fadeOut(300);
 }
 allRecipe();
@@ -61,15 +67,13 @@ allRecipe();
 // display the all recipe
 function displayAllRecipe(arr) {
   let result = "";
-  for (let i = 0; i < arr.length; i++) {
+  for (const item of arr) {
     result += `
                         <div class="col-md-3">
-                        <div onClick="getDetail(${arr[i]
-                          .idMeal})" class="meal position-relative overflow-hidden rounded-2">
-                            <img src="${arr[i]
-                              .strMealThumb}" class="w-100" alt="">
+                        <div onClick="getDetail(${item.idMeal})" class="meal position-relative overflow-hidden rounded-2">
+                            <img src="${item.strMealThumb}" class="w-100" loading="lazy" alt="${item.strMeal}">
                             <div class="meal-layer position-absolute d-flex align-items-center  p-2 text-black">
-                                <h2>${arr[i].strMeal}</h2>
+                                <h2>${item.strMeal}</h2>
                             </div>
                         </div>
                 </div>
@@ -87,10 +91,12 @@ async function getDetail(id) {
     // console.log(data.meals);
     displayDetail(data.meals[0]);
     closeDetail();
-    $(".loading").fadeOut(300);
   } catch (err) {
     console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
   }
+  $(".loading").fadeOut(300);
 }
 
 function displayDetail(data) {
@@ -111,7 +117,7 @@ function displayDetail(data) {
   if (tags == undefined) {
     tags = []
   }
-  for(let i =0 ;i<tags.length;i++) {
+  for (let i = 0; i < tags.length; i++) {
     counterTags += `<li class="alert alert-danger m-2 p-2">${tags[i]}</li>`;
   }
   console.log(data.strTags?.split(" "));
@@ -149,60 +155,72 @@ function showSearchInputs() {
             <input onkeyup="searchByName(this.value)" class="form-control    text-dark" type="search" placeholder="Search By Name">
         </div>
         <div class="col-md-6 ">
-            <input onkeyup="searchByFLetter(this.value)" class="form-control    text-dark" type="search" placeholder="Search By Name">
+            <input onkeyup="searchByFilter(this.value)" class="form-control    text-dark" type="search" placeholder="Search By Filter">
         </div>
     </div>
     `;
   rowData.innerHTML = "";
 }
-document.querySelector(".search").addEventListener("click", function() {
+document.querySelector(".search").addEventListener("click", function () {
   showSearchInputs();
   close();
 });
 // search by the name
-async function searchByName(term) {
+async function searchByName(value) {
+  $(".loading").fadeIn(500).css({ display: "flex" });
   close();
-  $(".loading").fadeIn(300).css({ display: "flex" });
   rowData.innerHTML = "";
   try {
-    let response = await fetch(`${baseUrl}/api/json/v1/1/search.php?s=${term}`);
+    let response = await fetch(`${baseUrl}/api/json/v1/1/search.php?s=${value}`);
     let data = await response.json();
     console.log(data);
     if (data != null) {
       displayAllRecipe(data.meals);
-      $(".loading").fadeOut(300);
+      rowData.classList.remove("d-none")
+      error.classList.add("d-none");
     }
   } catch (err) {
-    console.log(err);
+    // console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
   }
+  $(".loading").fadeOut(500);
 }
 // search by the first letter
-async function searchByFLetter(term) {
+async function searchByFilter(value) {
   close();
   $(".loading").fadeIn(300).css({ display: "flex" });
-
   try {
-    let response = await fetch(`${baseUrl}/api/json/v1/1/search.php?f=${term}`);
+    let response = await fetch(`${baseUrl}/api/json/v1/1/search.php?f=${value}`);
     let data = await response.json();
     if (data != null) {
       displayAllRecipe(data.meals);
-      $(".loading").fadeOut(300);
+      rowData.classList.remove("d-none")
+      error.classList.add("d-none");
     }
   } catch (err) {
     console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
   }
+  $(".loading").fadeOut(300);
 }
 ////////////////////////////////////////////////////////////////////////
 async function getCategories() {
   searchContainer.innerHTML = "";
   $(".loading").fadeIn(300).css({ display: "flex" });
-
-  let response = await fetch(`${baseUrl}/api/json/v1/1/categories.php`);
-  let data = await response.json();
-  console.log(data.categories);
-  displayCategories(data.categories);
-  document.querySelector(".details").classList.add("d-none");
-  rowData.classList.remove("d-none");
+  try {
+    let response = await fetch(`${baseUrl}/api/json/v1/1/categories.php`);
+    let data = await response.json();
+    console.log(data.categories);
+    displayCategories(data.categories);
+    document.querySelector(".details").classList.add("d-none");
+    rowData.classList.remove("d-none");
+  } catch (err) {
+    console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
+  }
   $(".loading").fadeOut(300);
 }
 // getCategories()
@@ -220,9 +238,9 @@ function displayCategories(arr) {
                     <div class="meal-layer position-absolute text-center text-black p-2">
                         <h3>${item.strCategory}</h3>
                         <p>${item.strCategoryDescription
-                          .split(" ")
-                          .slice(0, 20)
-                          .join(" ")}</p>
+        .split(" ")
+        .slice(0, 20)
+        .join(" ")}</p>
                     </div>
                 </div>
         </div>
@@ -231,7 +249,7 @@ function displayCategories(arr) {
 
   rowData.innerHTML = result;
 }
-document.querySelector(".categories").addEventListener("click", function(e) {
+document.querySelector(".categories").addEventListener("click", function (e) {
   getCategories();
   close();
 });
@@ -247,23 +265,30 @@ async function getCategoriesMeals(category) {
     // console.log(data.meals.slice(0, 20));
     displayAllRecipe(data.meals.slice(0, 20));
 
-    $(".loading").fadeOut(300);
   } catch (err) {
     console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
   }
+  $(".loading").fadeOut(300);
 }
 // getCategoriesMeals("Beef");
 ////////////////////////////////////////////////////////////////////////
 async function getArea() {
   rowData.innerHTML = "";
   $(".loading").fadeIn(300).css({ display: "flex" });
-
-  let response = await fetch(`${baseUrl}/api/json/v1/1/list.php?a=list`);
-  let data = await response.json();
-  console.log(data.meals[0].strArea);
-  displayArea(data.meals);
-  document.querySelector(".details").classList.add("d-none");
-  rowData.classList.remove("d-none");
+  try {
+    let response = await fetch(`${baseUrl}/api/json/v1/1/list.php?a=list`);
+    let data = await response.json();
+    console.log(data.meals[0].strArea);
+    displayArea(data.meals);
+    document.querySelector(".details").classList.add("d-none");
+    rowData.classList.remove("d-none");
+  } catch (err) {
+    console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
+  }
   $(".loading").fadeOut(300);
 }
 
@@ -285,12 +310,11 @@ function displayArea(arr) {
   rowData.innerHTML = result;
 }
 
-document.querySelector(".areas").addEventListener("click", function(e) {
+document.querySelector(".areas").addEventListener("click", function (e) {
   getArea();
   close();
 });
 // function clicked item in the the displayArea
-
 async function getAreaMeals(area) {
   $(".loading").fadeIn(300).css({ display: "flex" });
   try {
@@ -298,20 +322,27 @@ async function getAreaMeals(area) {
     let data = await response.json();
     // console.log(data.meals.slice(0, 20));
     displayAllRecipe(data.meals.slice(0, 20));
-    $(".loading").fadeOut(300);
   } catch (err) {
     console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
   }
+  $(".loading").fadeOut(300);
 }
 ////////////////////////////////////////////////////////////////
 async function getIngredients() {
   $(".loading").fadeIn(300).css({ display: "flex" });
-  let response = await fetch(`${baseUrl}/api/json/v1/1/list.php?i=list`);
-  let data = await response.json();
-  console.log(data.meals);
-  displayIngredients(data.meals.slice(0, 20));
-  document.querySelector(".details").classList.add("d-none");
-  rowData.classList.remove("d-none");
+  try {
+    let response = await fetch(`${baseUrl}/api/json/v1/1/list.php?i=list`);
+    let data = await response.json();
+    console.log(data.meals);
+    displayIngredients(data.meals.slice(0, 20));
+    document.querySelector(".details").classList.add("d-none");
+    rowData.classList.remove("d-none");
+  } catch (err) {
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
+  }
   $(".loading").fadeOut(300);
 }
 function displayIngredients(arr) {
@@ -324,10 +355,7 @@ function displayIngredients(arr) {
                 <div onclick="getIngredientsMeals('${item.strIngredient}')" class="rounded-2 text-center cursor-pointer">
                         <i class="fa-solid fa-drumstick-bite fa-4x"></i>
                         <h3>${item.strIngredient}</h3>
-                        <p>${item.strDescription
-                          .split(" ")
-                          .slice(0, 20)
-                          .join(" ")}</p>
+                        <p>${item.strDescription.split(" ").slice(0, 20).join(" ")}</p>
                 </div>
         </div>
         `;
@@ -335,7 +363,7 @@ function displayIngredients(arr) {
 
   rowData.innerHTML = result;
 }
-document.querySelector(".ingredients").addEventListener("click", function(e) {
+document.querySelector(".ingredients").addEventListener("click", function (e) {
   getIngredients();
   close();
 });
@@ -349,10 +377,12 @@ async function getIngredientsMeals(ingredients) {
     let data = await response.json();
     // console.log(data.meals.slice(0, 20));
     displayAllRecipe(data.meals.slice(0, 20));
-    $(".loading").fadeOut(300);
   } catch (err) {
     console.log(err);
+    rowData.classList.add("d-none")
+    error.classList.remove("d-none");
   }
+  $(".loading").fadeOut(300);
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -360,13 +390,10 @@ function showContacts() {
   home.classList.add("d-none");
   contact.classList.remove("d-none");
 }
-document.querySelector(".contact").addEventListener("click", function(e) {
+document.querySelector(".contact").addEventListener("click", function (e) {
   close();
   showContacts();
 });
-
-const inputs = document.querySelectorAll("input");
-console.log(inputs);
 //// validation ///
 function validationAllInputs(el) {
   const regex = {
@@ -387,22 +414,7 @@ function validationAllInputs(el) {
     return true;
   }
 }
-inputName.addEventListener("input", function() {
-  validationAllInputs(this);
-});
-inputEmail.addEventListener("input", function() {
-  validationAllInputs(this);
-});
-
-inputPhone.addEventListener("input", function() {
-  validationAllInputs(this);
-});
-inputAge.addEventListener("input", function() {
-  validationAllInputs(this);
-});
-inputPassword.addEventListener("input", function() {
-  validationAllInputs(this);
-});
-inputRestPassword.addEventListener("input", function() {
-  validationAllInputs(this);
+document.querySelector("form").addEventListener("input", function (e) {
+  e.preventDefault();
+  validationAllInputs(e.target)
 });
